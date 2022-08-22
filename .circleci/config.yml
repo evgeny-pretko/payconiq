@@ -1,0 +1,22 @@
+# read official documentation https://circleci.com/docs/config-intro
+version: 2.1
+jobs:
+  api-test:
+    docker:
+      - image: cimg/openjdk:11.0.0
+    parallelism: 1
+    steps:
+      - checkout
+      - run:
+          name: Tests
+          command: |
+            mvn clean test
+            mvn allure:report
+      - store_artifacts:
+          path: target/site/allure-maven-plugin
+          destination: allure
+
+workflows:
+  test-assignment:
+    jobs:
+      - api-test
